@@ -1,0 +1,17 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  namespace: default
+  name: my-cloudsdk-config
+data:
+  config: |
+    {
+      "type": "external_account",
+      "audience": "identitynamespace:gke-projects-372400.svc.id.goog:https://container.googleapis.com/v1/projects/gke-projects-372400/locations/us-west1/clusters/wi",
+      "service_account_impersonation_url": "https://iamcredentials.googleapis.com/v1/projects/gke-projects-372400/serviceAccounts/impersonate@gke-projects-372400.iam.gserviceaccount.com:generateAccessToken",
+      "subject_token_type": "urn:ietf:params:oauth:token-type:jwt",
+      "token_url": "https://sts.googleapis.com/v1/token",
+      "credential_source": {
+        "file": "/var/run/secrets/tokens/gcp-ksa/token"
+      }
+    }

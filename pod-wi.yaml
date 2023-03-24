@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-wi-listbuckets
+  namespace:  default
+spec:
+  serviceAccountName: access-storage
+  containers:
+  - name: workload-identity-test
+    image: us-west1-docker.pkg.dev/YOURPORJECT/fancy/listbuckets:latest
+    env:
+      - name: GOOGLE_APPLICATION_CREDENTIALS
+        value: /var/run/secrets/tokens/gcp-ksa/google-application-credentials.json
+    volumeMounts:
+    - name: gcp-ksa
+      mountPath: /var/run/secrets/tokens/gcp-ksa
+      readOnly: true
+  volumes:
+  - name: gcp-ksa
+    projected:
+      defaultMode: 420
+      sources:
+      - serviceAccountToken:
+          path: token
+          audience: "YOURPORJECT".svc.id.goog
+          expirationSeconds: 172800
+      - configMap:
+          name: my-cloudsdk-config
+          optional: false
+          items:
+            - key: "config"
+              path: "google-application-credentials.json"

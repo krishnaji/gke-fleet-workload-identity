@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: key-no-wi-listbuckets
+spec:
+  volumes:
+      - name: google-cloud-key
+        secret:
+          secretName: storage-key
+  containers:
+  - name: no-wi-listbuckets
+    image: us-west1-docker.pkg.dev/YOURPORJECT/fancy/listbuckets:latest
+    volumeMounts:
+        - name: google-cloud-key
+          mountPath: /var/secrets/google
+    env:
+    - name: GOOGLE_APPLICATION_CREDENTIALS
+      value: /var/secrets/google/key.json
